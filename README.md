@@ -75,12 +75,12 @@ Para ello debemos proporcionar:
       <a href="https://github.com/marco11235813"><img src="assets/github.png" style="width:20px;"></a>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/157044866?v=4" width="200" height="200"><br><strong>Manuel</strong><br>
+      <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>Manuel</strong><br>
       <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
       <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/131561932?v=4" width="200" height="200"><br><strong>José</strong><br>
+      <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>José</strong><br>
       <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
       <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
     </td>
@@ -91,12 +91,12 @@ Para ello debemos proporcionar:
 <table>
   <tr>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/109807315?v=4" width="200" height="200"><br><strong>Henry</strong><br>
+      <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>Henry</strong><br>
       <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
       <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/158371081?v=4" width="200" height="200"><br><strong>Mario</strong><br>
+      <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>Mario</strong><br>
       <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
       <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
     </td>
