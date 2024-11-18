@@ -40,3 +40,67 @@
 - [Tecnologías](#Tecnologías)
 - [Conclusiones](#Conclusiones)
 - [Equipo](#Equipo)
+
+# Introducción
+
+Nuestro cliente el Banco de Inversión Latinoamericano (BILA) quiere resolver la falta de herramientas accesibles para que sus clientes puedan identificar su perfil de riesgo y tomar decisiones de inversión informadas y personalizadas. Actualmente, muchas personas tienen dificultades para entender cuánto riesgo están dispuestas a asumir y cómo podrían crecer sus inversiones bajo diferentes escenarios de mercado. Esto resulta en inversiones mal ajustadas al perfil de riesgo, baja satisfacción y resultados financieros inesperados.
+
+# Objetivos
+
+Desarrollar una solución que permita a los clientes de BILA recibir asesoría personalizada en sus inversiones, en función de su perfil de riesgo, optimizando el portafolio de inversión  y proporcionando proyecciones de rendimiento para aumentar la satisfacción, retención y fidelización de los clientes.
+
+Para ello debemos proporcionar:
+
+* Un marco de análisis el cual será conformado por un análisis de la
+
+# Datos
+# Desarrollo
+## ETL
+## EDA
+## Dashboard
+## Modelo
+## Deploy
+# Tecnologías
+# Conclusiones
+# Equipo
+
+<div align="center">
+
+<!-- Primera fila -->
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>Marco</strong><br>
+      <a href="https://www.linkedin.com/in/marco-antonio-caro-22459711b"><img src="assets/linkedin.png" style="width:20px;"></a>
+      <a href="https://github.com/marco11235813"><img src="assets/github.png" style="width:20px;"></a>
+    </td>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/157044866?v=4" width="200" height="200"><br><strong>Manuel</strong><br>
+      <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
+      <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
+    </td>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/131561932?v=4" width="200" height="200"><br><strong>José</strong><br>
+      <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
+      <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
+    </td>
+  </tr>
+</table>
+
+<!-- Segunda fila -->
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/109807315?v=4" width="200" height="200"><br><strong>Henry</strong><br>
+      <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
+      <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
+    </td>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/158371081?v=4" width="200" height="200"><br><strong>Mario</strong><br>
+      <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
+      <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
+    </td>
+  </tr>
+</table>
+
+</div>
