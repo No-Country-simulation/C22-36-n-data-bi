@@ -76,7 +76,7 @@ Para ello debemos proporcionar:
     </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/12752331?v=4" width="200" height="200"><br><strong>Manuel</strong><br>
-      <a href="https://www.linkedin.com/in/manuel-carruitero-b8b50688/"><img src="assets/linkedin.png"><img src="assets/linkedin.png" style="width:20px;"></a>
+      <a href="https://www.linkedin.com/in/manuel-carruitero-b8b50688/"><img src="assets/linkedin.png" style="width:20px;"></a>
       <a href="https://github.com/mcarruitero"><img src="assets/github.png" style="width:20px;"></a>
     </td>
     <td align="center">
