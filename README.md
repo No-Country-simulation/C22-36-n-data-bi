@@ -75,14 +75,14 @@ Para ello debemos proporcionar:
       <a href="https://github.com/marco11235813"><img src="assets/github.png" style="width:20px;"></a>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>Manuel</strong><br>
+      <img src="https://avatars.githubusercontent.com/u/12752331?v=4" width="200" height="200"><br><strong>Manuel</strong><br>
       <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
       <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
     </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>José</strong><br>
-      <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
-      <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
+      <a href="https://www.linkedin.com/in/manuel-carruitero-b8b50688/"><img src="assets/linkedin.png" style="width:20px;"></a>
+      <a href="https://github.com/mcarruitero"><img src="assets/github.png" style="width:20px;"></a>
     </td>
   </tr>
 </table>
@@ -91,9 +91,9 @@ Para ello debemos proporcionar:
 <table>
   <tr>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>Henry</strong><br>
-      <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
-      <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
+      <img src="https://avatars.githubusercontent.com/u/144939187?v=4" width="200" height="200"><br><strong>Henry</strong><br>
+      <a href="https://www.linkedin.com/in/henry-larreal-carrera/"><img src="assets/linkedin.png" style="width:20px;"></a>
+      <a href="https://github.com/hendevdata"><img src="assets/github.png" style="width:20px;"></a>
     </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>Mario</strong><br>
