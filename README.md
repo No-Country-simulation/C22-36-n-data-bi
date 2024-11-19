@@ -81,8 +81,8 @@ Para ello debemos proporcionar:
     </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>José</strong><br>
-      <a href="LINK-LINKEDIN"><img src="assets/linkedin.png" style="width:20px;"></a>
-      <a href="LINK-GITHUB"><img src="assets/github.png" style="width:20px;"></a>
+      <a href="www.linkedin.com/in/joselo-ardiles-ugaz"><img src="assets/linkedin.png" style="width:20px;"></a>
+      <a href="https://github.com/JoseloArdiles"><img src="assets/github.png" style="width:20px;"></a>
     </td>
   </tr>
 </table>
