@@ -23,6 +23,7 @@ if 'submitted_section_1' not in st.session_state:
 if 'submitted_section_2' not in st.session_state:
     st.session_state.submitted_section_2 = False
 
+
 def iniciar_cuestionario():
     st.session_state.started = True
     st.rerun()
@@ -228,6 +229,7 @@ elif st.session_state.started:
             st.rerun()
 
     # Sección 4 (Resultados)
+    # En la sección donde se muestran los resultados del cuestionario (sección 4)
     elif st.session_state.section == 4:
         st.subheader("Resultados de tu Perfil de Riesgo")
         
@@ -258,8 +260,8 @@ elif st.session_state.started:
         with col3:
             st.metric("Tolerancia al Riesgo", f"{st.session_state.score_section_3} pts")
         
-        st.metric("Puntuación Total", f"{total_score} pts")
-            # Add a new column for portfolio analysis button
+        # Modificación: Quitar la línea anterior de Puntuación Total
+        
         col1, col2, col3 = st.columns(3)
         
         with col1:
@@ -267,71 +269,83 @@ elif st.session_state.started:
         with col3:
             # Add a button to view portfolio analysis
             if st.button("Analizar Portafolio", key="btn_portfolio_analysis"):
-                # Get portfolio weights based on risk profile
-                portfolio_weights = RISK_PROFILE_WEIGHTS[perfil]
-                
-                # Perform portfolio analysis
-                with st.spinner('Analizando portafolio...'):
-                    analysis_results = analyze_portfolio(portfolio_weights)
-                
-                # Create a new section for portfolio analysis results
-                st.subheader("Análisis de Portafolio")
-                
-                # Compound Portfolio Metrics
-                st.markdown("### Métricas del Portafolio Compuesto")
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    st.metric("Retorno Anual", f"{analysis_results['compound_metrics']['return'].iloc[0]:.2%}")
-                with col2:
-                    st.metric("Volatilidad", f"{analysis_results['compound_metrics']['volatility'].iloc[0]:.2%}")
-                with col3:
-                    st.metric("Ratio Sharpe", f"{analysis_results['compound_metrics']['sharpe_ratio'].iloc[0]:.2%}")
-                
-                # Predictions Visualization
-                st.markdown("### Proyecciones de Inversión")
-                
-                # Create tabs for different prediction periods
-                tab_3y, tab_5y, tab_10y = st.tabs(["3 Años", "5 Años", "10 Años"])
-                
-                prediction_periods = {
-                    "3 Años": analysis_results['predictions']['3y'],
-                    "5 Años": analysis_results['predictions']['5y'], 
-                    "10 Años": analysis_results['predictions']['10y']
-                }
-                
-                # Plot for each period
-                for period, pred_data in zip(["3 Años", "5 Años", "10 Años"], 
-                                            [analysis_results['predictions']['3y'], 
-                                            analysis_results['predictions']['5y'], 
-                                            analysis_results['predictions']['10y']]):
-                    if period == "3 Años":
-                        with tab_3y:
-                            st.line_chart(pred_data.set_index('Day')['Portfolio_Value'])
-                            st.dataframe(pred_data)
-                    elif period == "5 Años":
-                        with tab_5y:
-                            st.line_chart(pred_data.set_index('Day')['Portfolio_Value'])
-                            st.dataframe(pred_data)
-                    else:
-                        with tab_10y:
-                            st.line_chart(pred_data.set_index('Day')['Portfolio_Value'])
-                            st.dataframe(pred_data)
-                
-                # Detailed portfolio composition
-                st.markdown("### Composición del Portafolio")
-                for name, portfolio in analysis_results['portfolio_results'].items():
-                    st.markdown(f"#### {name}")
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("Retorno Anual", f"{portfolio['returns'].mean():.2%}")
-                    with col2:
-                        st.metric("Volatilidad", f"{portfolio['volatility'].mean():.2%}")
-                    with col3:
-                        st.metric("Peso Optimizado", f"{portfolio['optimal_weights']['weights'].mean():.2%}")
+                st.session_state.section = 5  # Nuevo estado para la sección de análisis de portafolio
+                st.rerun()
         
-        # Botón para reiniciar
+        # Botón para reiniciar al final
         st.markdown("---")
         if st.button("Realizar nuevo cuestionario", key="btn_reinicio"):
             reiniciar_cuestionario()
 
-
+    # Nueva sección para análisis de portafolio
+    elif st.session_state.section == 5:
+        st.title("Análisis Detallado de Portafolio")
+        
+        # Recuperar información del perfil y portafolio
+        total_score = st.session_state.score_section_1 + st.session_state.score_section_2 + st.session_state.score_section_3
+        perfil, portafolio = calcular_perfil(total_score)
+        
+        # Obtener pesos del portafolio
+        portfolio_weights = RISK_PROFILE_WEIGHTS[perfil]
+        
+        # Realizar análisis de portafolio
+        with st.spinner('Analizando portafolio...'):
+            analysis_results = analyze_portfolio(portfolio_weights)
+        
+        # Contenido similar al análisis anterior...
+        st.subheader("Métricas del Portafolio Compuesto")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Retorno Anual", f"{analysis_results['compound_metrics']['return'].iloc[0]:.2%}")
+        with col2:
+            st.metric("Volatilidad", f"{analysis_results['compound_metrics']['volatility'].iloc[0]:.2%}")
+        with col3:
+            st.metric("Ratio Sharpe", f"{analysis_results['compound_metrics']['sharpe_ratio'].iloc[0]:.2%}")
+        
+        # Predictions Visualization
+        st.markdown("### Proyecciones de Inversión")
+        
+        # Create tabs for different prediction periods
+        tab_3y, tab_5y, tab_10y = st.tabs(["3 Años", "5 Años", "10 Años"])
+        
+        prediction_periods = {
+            "3 Años": analysis_results['predictions']['3y'],
+            "5 Años": analysis_results['predictions']['5y'], 
+            "10 Años": analysis_results['predictions']['10y']
+        }
+        
+        # Plot for each period
+        for period, pred_data in zip(["3 Años", "5 Años", "10 Años"], 
+                                    [analysis_results['predictions']['3y'], 
+                                    analysis_results['predictions']['5y'], 
+                                    analysis_results['predictions']['10y']]):
+            if period == "3 Años":
+                with tab_3y:
+                    st.line_chart(pred_data.set_index('Day')['Portfolio_Value'])
+                    st.dataframe(pred_data)
+            elif period == "5 Años":
+                with tab_5y:
+                    st.line_chart(pred_data.set_index('Day')['Portfolio_Value'])
+                    st.dataframe(pred_data)
+            else:
+                with tab_10y:
+                    st.line_chart(pred_data.set_index('Day')['Portfolio_Value'])
+                    st.dataframe(pred_data)
+        
+        # Detailed portfolio composition
+        st.markdown("### Composición del Portafolio")
+        for name, portfolio in analysis_results['portfolio_results'].items():
+            st.markdown(f"#### {name}")
+            col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Retorno Anual", f"{portfolio['returns'].mean():.2%}")
+        with col2:
+            st.metric("Volatilidad", f"{portfolio['volatility'].mean():.2%}")
+        with col3:
+            st.metric("Peso Optimizado", f"{portfolio['optimal_weights']['weights'].mean():.2%}")
+        
+        # Botón para volver
+        st.markdown("---")
+        if st.button("Volver a Resultados", key="btn_volver_resultados"):
+            st.session_state.section = 4
+            st.rerun()
