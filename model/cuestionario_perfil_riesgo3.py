@@ -1,10 +1,18 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Import the portfolio analysis classes
+st.set_page_config(
+    page_title="PortfolioOp",
+    page_icon="🏦",
+    layout="wide" #"centered"
+)
+
+
+# Import the necessary classes
 from data_loader import DataLoader
-from portfolio_analysis import PortfolioAnalyzer, CompoundPortfolioAnalyzer
+from portfolio_analysis import PortfolioAnalyzer
 from ml_predictor import PortfolioPredictor
 
 # Inicialización de variables de estado
@@ -22,7 +30,6 @@ if 'submitted_section_1' not in st.session_state:
     st.session_state.submitted_section_1 = False
 if 'submitted_section_2' not in st.session_state:
     st.session_state.submitted_section_2 = False
-
 
 def iniciar_cuestionario():
     st.session_state.started = True
@@ -51,11 +58,11 @@ def reiniciar_cuestionario():
     st.session_state.submitted_section_1 = False
     st.session_state.submitted_section_2 = False
     st.rerun()
-
-
-# Add new functions for portfolio analysis
-def analyze_portfolio(profile_weights):
-    # Define portfolios as in main.py
+def run_portfolio_analysis(portfolio_allocation):
+    """
+    Run portfolio optimization and prediction based on allocation
+    """
+    # 1. Define portfolios
     portfolios = {
         "Bonos": ["^IRX", "^FVX", "^TNX", "^TYX"],
         "ETFs": ["SPY", "QQQ", "VTI", "IVV", "XLV"],
@@ -63,61 +70,155 @@ def analyze_portfolio(profile_weights):
         "Futuros": ["GC=F", "CL=F", "SI=F", "NQ=F", "ES=F"],
         "Criptomonedas": ["BTC-USD", "ETH-USD", "BNB-USD", "TRX-USD", "DOGE-USD"]
     }
-    
-    # Initialize data loader
-    loader = DataLoader()
-    portfolio_data = loader.process_portfolios(portfolios)
-    
-    # Analyze each portfolio
-    portfolio_results = {}
-    for name, data in portfolio_data.items():
-        analyzer = PortfolioAnalyzer(data)
-        returns, volatility = analyzer.calculate_metrics()
-        optimal_weights = analyzer.optimize_weights()
-        
-        portfolio_results[name] = {
-            'returns': returns,
-            'volatility': volatility,
-            'optimal_weights': optimal_weights
-        }
-    
-    # Create and analyze the compound portfolio
-    compound_analyzer = CompoundPortfolioAnalyzer(
-        portfolio_data, 
-        portfolio_weights=profile_weights
-    )
-    compound_metrics = compound_analyzer.get_compound_metrics()
-    
-    # Predictor for the compound portfolio
-    compound_predictor = PortfolioPredictor(
-        compound_analyzer.compound_returns, 
-        weights=None  # Compound returns are already weighted
-    )
-    compound_predictor.train_model()
-    
-    # Predictions for the compound portfolio
-    investment = 100000  # $100,000 initial
-    compound_pred_3y = compound_predictor.predict_returns(investment, 3)
-    compound_pred_5y = compound_predictor.predict_returns(investment, 5)
-    compound_pred_10y = compound_predictor.predict_returns(investment, 10)
-    
-    return {
-        'portfolio_results': portfolio_results,
-        'compound_metrics': compound_metrics,
-        'predictions': {
-            '3y': compound_pred_3y,
-            '5y': compound_pred_5y,
-            '10y': compound_pred_10y
-        }
-    }
 
-# Mapping of risk profiles to portfolio weights
-RISK_PROFILE_WEIGHTS = {
-    "Conservador": {"Bonos": 0.8, "ETFs": 0.2, "Acciones": 0, "Futuros": 0, "Criptomonedas": 0},
-    "Moderado": {"Bonos": 0.4, "ETFs": 0.4, "Acciones": 0.2, "Futuros": 0, "Criptomonedas": 0},
-    "Agresivo": {"Bonos": 0.1, "ETFs": 0.3, "Acciones": 0.5, "Futuros": 0.1, "Criptomonedas": 0},
-    "Muy Agresivo": {"Bonos": 0, "ETFs": 0, "Acciones": 0.6, "Futuros": 0.2, "Criptomonedas": 0.2}
-}
+    # 2. Load data
+    loader = DataLoader(start_date="2020-01-01")
+    portfolio_data = loader.process_portfolios(portfolios)
+
+    # 3. Analyze and optimize each selected portfolio
+    investment_total = 100000  # Initial capital
+    results = {}
+
+    for portfolio_name, allocation in portfolio_allocation.items():
+        if allocation > 0 and portfolio_name in portfolio_data:
+            # Skip if portfolio is empty
+            if portfolio_data[portfolio_name].empty:
+                st.warning(f"No data available for {portfolio_name} portfolio")
+                continue
+
+            # Perform analysis
+            analyzer = PortfolioAnalyzer(portfolio_data[portfolio_name])
+            
+            # Calculate metrics
+            returns, volatility = analyzer.calculate_metrics()
+            
+            # Optimize weights
+            optimal_weights = analyzer.optimize_weights()
+            
+            # Calculate portfolio performance
+            performance = analyzer.portfolio_performance(optimal_weights['weights'])
+            
+            # Predict returns
+            investment = investment_total * allocation
+            predictor = PortfolioPredictor(portfolio_data[portfolio_name], optimal_weights['weights'])
+            predictor.train_model()
+            
+            # Predictions for different time horizons
+            predictions = {
+                3: predictor.predict_returns(investment, 3),
+                5: predictor.predict_returns(investment, 5),
+                10: predictor.predict_returns(investment, 10)
+            }
+            
+            # Store results
+            results[portfolio_name] = {
+                'returns': returns,
+                'volatility': volatility,
+                'optimal_weights': optimal_weights,
+                'performance': performance,
+                'predictions': predictions
+            }
+
+    return results
+
+def display_portfolio_results(results):
+    """
+    Display portfolio analysis results in Streamlit
+    """
+    st.header("Análisis Detallado de Portafolio")
+    
+    # Tabs for different views
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "Rendimientos y Volatilidad", 
+        "Distribución de Pesos", 
+        "Predicciones a Largo Plazo", 
+        "Comparación de Rendimiento"
+    ])
+    
+    with tab1:
+        st.subheader("Rendimientos y Volatilidad por Activo")
+        metrics_data = []
+        for portfolio_name, portfolio_data in results.items():
+            for asset, ret, vol in zip(
+                portfolio_data['returns'].index, 
+                portfolio_data['returns'], 
+                portfolio_data['volatility']
+            ):
+                metrics_data.append({
+                    'Portafolio': portfolio_name,
+                    'Activo': asset,
+                    'Rendimiento Anual (%)': ret * 100,
+                    'Volatilidad Anual (%)': vol * 100
+                })
+        
+        metrics_df = pd.DataFrame(metrics_data)
+        st.dataframe(metrics_df.style.format({
+            'Rendimiento Anual (%)': '{:.2f}%',
+            'Volatilidad Anual (%)': '{:.2f}%'
+        }))
+    
+    with tab2:
+        st.subheader("Distribución de Pesos en Portafolios")
+        fig, axes = plt.subplots(1, len(results), figsize=(15, 5))
+        
+        for i, (portfolio_name, portfolio_data) in enumerate(results.items()):
+            weights = portfolio_data['optimal_weights']['weights']
+            asset_names = portfolio_data['returns'].index
+            
+            axes[i].pie(weights, labels=asset_names, autopct='%1.1f%%')
+            axes[i].set_title(f'Pesos de {portfolio_name}')
+        
+        plt.tight_layout()
+        st.pyplot(fig)
+    
+    with tab3:
+        st.subheader("Proyecciones de Valor a Largo Plazo")
+        horizons = [3, 5, 10]
+        fig, axes = plt.subplots(1, len(horizons), figsize=(15, 5))
+        
+        for i, years in enumerate(horizons):
+            for portfolio_name, portfolio_data in results.items():
+                predictions = portfolio_data['predictions'][years]
+                axes[i].plot(
+                    predictions['Day'], 
+                    predictions['Portfolio_Value'], 
+                    label=portfolio_name
+                )
+            
+            axes[i].set_title(f'Proyección a {years} Años')
+            axes[i].set_xlabel('Días')
+            axes[i].set_ylabel('Valor del Portafolio ($)')
+            axes[i].legend()
+        
+        plt.tight_layout()
+        st.pyplot(fig)
+    
+    with tab4:
+        st.subheader("Comparación de Rendimiento y Riesgo")
+        performance_data = []
+        for portfolio_name, portfolio_data in results.items():
+            performance = portfolio_data['performance']
+            performance_data.append({
+                'Portafolio': portfolio_name,
+                'Rendimiento Anual (%)': performance['return'] * 100,
+                'Volatilidad Anual (%)': performance['volatility'] * 100,
+                'Ratio Sharpe': performance['sharpe_ratio']
+            })
+
+        performance_df = pd.DataFrame(performance_data)
+        
+        # Verificar y convertir columnas
+        performance_df['Rendimiento Anual (%)'] = pd.to_numeric(performance_df['Rendimiento Anual (%)'], errors='coerce')
+        performance_df['Volatilidad Anual (%)'] = pd.to_numeric(performance_df['Volatilidad Anual (%)'], errors='coerce')
+        performance_df['Ratio Sharpe'] = pd.to_numeric(performance_df['Ratio Sharpe'], errors='coerce')
+        performance_df = performance_df.fillna(0)  # Manejar NaN si los hubiera
+
+        # Mostrar en Streamlit
+        st.dataframe(performance_df.style.format({
+            'Rendimiento Anual (%)': '{:.2f}%',
+            'Volatilidad Anual (%)': '{:.2f}%',
+            'Ratio Sharpe': '{:.2f}'
+        }))
 
 # Portada
 if not st.session_state.started:
@@ -229,7 +330,6 @@ elif st.session_state.started:
             st.rerun()
 
     # Sección 4 (Resultados)
-    # En la sección donde se muestran los resultados del cuestionario (sección 4)
     elif st.session_state.section == 4:
         st.subheader("Resultados de tu Perfil de Riesgo")
         
@@ -260,101 +360,52 @@ elif st.session_state.started:
         with col3:
             st.metric("Tolerancia al Riesgo", f"{st.session_state.score_section_3} pts")
         
-        # Modificación: Quitar la línea anterior de Puntuación Total
+        st.metric("Puntuación Total", f"{total_score} pts")
         
-        col1, col2, col3 = st.columns(3)
-
-        # Mostrar la puntuación total
-        with col1:
-            st.metric("Puntuación Total", f"{total_score} pts")
-
-        # Espacio entre la puntuación y los botones
+        # Botón para reiniciar
         st.markdown("---")
-
-        # Crear dos columnas para los botones
-        col_boton1, col_boton2 = st.columns([1, 1])
-
-        with col_boton1:
-            # Botón para analizar portafolio
-            if st.button("Analizar Portafolio", key="btn_portfolio_analysis"):
-                st.session_state.section = 5  
-                st.rerun()
-
-        with col_boton2:
-            # Botón para reiniciar el cuestionario
-            if st.button("Realizar nuevo cuestionario", key="btn_reinicio"):
-                reiniciar_cuestionario()
+        if st.button("Realizar nuevo cuestionario", key="btn_reinicio"):
+            reiniciar_cuestionario()
 
 
-    # Nueva sección para análisis de portafolio
-    elif st.session_state.section == 5:
-        st.title("Análisis Detallado de Portafolio")
-        
-        # Recuperar información del perfil y portafolio
-        total_score = st.session_state.score_section_1 + st.session_state.score_section_2 + st.session_state.score_section_3
-        perfil, portafolio = calcular_perfil(total_score)
-        
-        # Obtener pesos del portafolio
-        portfolio_weights = RISK_PROFILE_WEIGHTS[perfil]
-        
-        # Realizar análisis de portafolio
-        with st.spinner('Analizando portafolio...'):
-            analysis_results = analyze_portfolio(portfolio_weights)
-        
-        # Contenido similar al análisis anterior...
-        st.subheader("Métricas del Portafolio Compuesto")
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("Retorno Anual", f"{analysis_results['compound_metrics']['return'].iloc[0]:.2%}")
-        with col2:
-            st.metric("Volatilidad", f"{analysis_results['compound_metrics']['volatility'].iloc[0]:.2%}")
-        with col3:
-            st.metric("Ratio Sharpe", f"{analysis_results['compound_metrics']['sharpe_ratio'].iloc[0]:.2%}")
-        
-        # Predictions Visualization
-        st.markdown("### Proyecciones de Inversión")
-        
-        # Create tabs for different prediction periods
-        tab_3y, tab_5y, tab_10y = st.tabs(["3 Años", "5 Años", "10 Años"])
-        
-        prediction_periods = {
-            "3 Años": analysis_results['predictions']['3y'],
-            "5 Años": analysis_results['predictions']['5y'], 
-            "10 Años": analysis_results['predictions']['10y']
-        }
-        
-        # Plot for each period
-        for period, pred_data in zip(["3 Años", "5 Años", "10 Años"], 
-                                    [analysis_results['predictions']['3y'], 
-                                    analysis_results['predictions']['5y'], 
-                                    analysis_results['predictions']['10y']]):
-            if period == "3 Años":
-                with tab_3y:
-                    st.line_chart(pred_data.set_index('Day')['Portfolio_Value'])
-                    st.dataframe(pred_data)
-            elif period == "5 Años":
-                with tab_5y:
-                    st.line_chart(pred_data.set_index('Day')['Portfolio_Value'])
-                    st.dataframe(pred_data)
-            else:
-                with tab_10y:
-                    st.line_chart(pred_data.set_index('Day')['Portfolio_Value'])
-                    st.dataframe(pred_data)
-        
-        # Detailed portfolio composition
-        st.markdown("### Composición del Portafolio")
-        for name, portfolio in analysis_results['portfolio_results'].items():
-            st.markdown(f"#### {name}")
-            col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("Retorno Anual", f"{portfolio['returns'].mean():.2%}")
-        with col2:
-            st.metric("Volatilidad", f"{portfolio['volatility'].mean():.2%}")
-        with col3:
-            st.metric("Peso Optimizado", f"{portfolio['optimal_weights']['weights'].mean():.2%}")
-        
-        # Botón para volver
-        st.markdown("---")
-        if st.button("Volver a Resultados", key="btn_volver_resultados"):
-            st.session_state.section = 4
-            st.rerun()
+        if st.button("Generar Análisis de Portafolio Detallado", key="btn_portfolio_analysis"):
+            # Determine portfolio allocation based on risk profile
+            if perfil == "Conservador":
+                portfolio_allocation = {
+                    "Bonos": 0.8,
+                    "ETFs": 0.2,
+                    "Acciones": 0,
+                    "Futuros": 0,
+                    "Criptomonedas": 0
+                }
+            elif perfil == "Moderado":
+                portfolio_allocation = {
+                    "Bonos": 0.4,
+                    "ETFs": 0.4,
+                    "Acciones": 0.2,
+                    "Futuros": 0,
+                    "Criptomonedas": 0
+                }
+            elif perfil == "Agresivo":
+                portfolio_allocation = {
+                    "Bonos": 0.1,
+                    "ETFs": 0.3,
+                    "Acciones": 0.5,
+                    "Futuros": 0.1,
+                    "Criptomonedas": 0
+                }
+            else:  # Muy Agresivo
+                portfolio_allocation = {
+                    "Bonos": 0,
+                    "ETFs": 0.2,
+                    "Acciones": 0.6,
+                    "Futuros": 0.2,
+                    "Criptomonedas": 0
+                }
+            
+            # Run portfolio analysis
+            with st.spinner('Generando análisis de portafolio...'):
+                portfolio_results = run_portfolio_analysis(portfolio_allocation)
+            
+            # Display results
+            display_portfolio_results(portfolio_results)

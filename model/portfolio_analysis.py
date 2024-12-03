@@ -19,7 +19,7 @@ class PortfolioAnalyzer:
         annual_volatility = self.returns.std() * np.sqrt(252)
         return annual_returns, annual_volatility
     
-    def optimize_weights(self, max_weight: float = 0.6, min_weight: float = 0.05) -> Dict:
+    def optimize_weights(self, max_weight: float = 0.35, min_weight: float = 0.05) -> Dict:
         """Optimiza los pesos del portafolio usando Sharpe Ratio con restricción de peso máximo."""
         n_assets = len(self.data.columns)
         
@@ -113,15 +113,6 @@ class PortfolioAnalyzer:
 
 
 
-
-
-
-
-
-
-
-
-
 class CompoundPortfolioAnalyzer:
     def __init__(self, portfolio_data: Dict[str, pd.DataFrame], portfolio_weights: Dict[str, float] = None, risk_free_rate: float = None):
         """
@@ -165,3 +156,9 @@ class CompoundPortfolioAnalyzer:
             'volatility': annual_vol,
             'sharpe_ratio': (annual_return - self.risk_free_rate) / annual_vol
         }
+
+
+
+
+
+
