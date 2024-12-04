@@ -11,7 +11,7 @@ class PortfolioPredictor:
         self.model = RandomForestRegressor(n_estimators=100, random_state=42)
         
     def prepare_data(self, window_size: int = 30) -> Tuple[np.array, np.array]:
-        """Preparación los datos para el modelo de ML."""
+        """Prepara los datos para el modelo de ML- PRUEBA 01."""
         if self.weights is not None:
             # Caso de portafolio específico
             portfolio_returns = (self.data.pct_change() * self.weights).sum(axis=1)

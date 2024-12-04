@@ -72,7 +72,7 @@ def run_portfolio_analysis(portfolio_allocation):
     }
 
     # 2. Load data
-    loader = DataLoader(start_date="2020-01-01")
+    loader = DataLoader(start_date="2017-11-09")
     portfolio_data = loader.process_portfolios(portfolios)
 
     # 3. Analyze and optimize each selected portfolio
@@ -397,10 +397,10 @@ elif st.session_state.started:
             else:  # Muy Agresivo
                 portfolio_allocation = {
                     "Bonos": 0,
-                    "ETFs": 0.2,
+                    "ETFs": 0.0,
                     "Acciones": 0.6,
                     "Futuros": 0.2,
-                    "Criptomonedas": 0
+                    "Criptomonedas": 0.2
                 }
             
             # Run portfolio analysis
