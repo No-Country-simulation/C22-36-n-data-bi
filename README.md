@@ -59,6 +59,22 @@ Para ello debemos proporcionar:
 - **3. Desarrollar proyecciones de rendimiento en diferentes escenarios de mercado**  para que el cliente visualice el posible crecimiento de su inversión y tome decisiones informadas.
 
 # Datos
+El proyecto utiliza datos financieros históricos para analizar y optimizar portafolios de inversión. Estos datos son extraídos de fuentes confiables a través de la API de Yahoo Finance utilizando la librería yfinance.
+
+### Fuente de Datos
+* Proveedor: Yahoo Finance
+* Contenido: Precios históricos de cierre para activos financieros como:
+*   Acciones: Microsoft (MSFT), Apple (AAPL), Google (GOOGL), entre otros.
+*   Bonos: Índices como ^IRX, ^FVX.
+*   ETFs: SPY, QQQ, VTI, entre otros.
+*   Futuros: Oro (GC=F), Petróleo (CL=F).
+*   Criptomonedas: Bitcoin (BTC-USD), Ethereum (ETH-USD).
+### Descripción del Dataset
+Rango temporal:
+Los datos abarcan desde el 9 de noviembre de 2017 hasta el 31 de octubre de 2024 (configurable).
+### Variables principales:
+* Close: Precio de cierre diario para cada activo.
+* Fecha: Índice temporal de los precios.
 # Desarrollo
 ## ETL
 ### Extracción de Datos
