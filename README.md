@@ -61,6 +61,20 @@ Para ello debemos proporcionar:
 # Datos
 # Desarrollo
 ## ETL
+### Extracción de Datos
+Utilizando la librería yfinance, se obtienen datos históricos de precios de cierre de una lista de activos financieros para un rango de fechas definido. Esto asegura que los datos sean precisos y estén actualizados.
+
+* Método: download_data(assets: List[str])
+* Entrada: Lista de activos financieros (por ejemplo, ["MSFT", "AAPL"]).
+* Salida: DataFrame consolidado con precios de cierre para cada activo.
+### Transformación de Datos
+Los datos extraídos se transforman para mantener únicamente las columnas relevantes (por ejemplo, los precios de cierre). Se renombran las columnas con los nombres de los activos para facilitar su análisis posterior.
+
+### Procesamiento de Portafolios
+La función process_portfolios(portfolios: Dict[str, List[str]]) organiza los datos en portafolios categorizados por tipo de activo (acciones, bonos, ETFs, etc.).
+
+* Entrada: Un diccionario donde las claves son los nombres de los portafolios (por ejemplo, "Bonos") y los valores son listas de activos correspondientes.
+* Salida: Un diccionario donde cada clave contiene un DataFrame con los datos históricos de los activos de ese portafolio.
 ## EDA
 ## Dashboard
 ## Modelo
