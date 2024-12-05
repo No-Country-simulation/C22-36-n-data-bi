@@ -68,7 +68,7 @@ Para ello debemos proporcionar:
 # Tecnologías
 El proyecto utiliza las siguientes herramientas y librerías:
 
-Python para el desarrollo general.
+* Python para el desarrollo general.
 * Streamlit para crear la interfaz interactiva.
 * YFinance para obtener datos históricos de activos.
 * Pandas y Numpy para manipulación y análisis de datos.
