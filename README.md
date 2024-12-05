@@ -56,7 +56,7 @@ Para ello debemos proporcionar:
 
 - **1. Identificar y clasificar el perfil de riesgo de cada cliente** mediante un cuestionario que permita definir su tolerancia al riesgo y horizonte de inversión, categorizándolo en un perfil adecuado (conservador, moderado, agresivo).
 - **2. Proporcionar recomendaciones personalizadas de distribución de activos** (bonos, ETFs, acciones, criptomonedas, etc) según el perfil de riesgo de cada cliente, optimizando la asignación de acuerdo con sus preferencias y objetivos financieros.
-- **3. Desarrollar proyecciones de rendimiento en diferentes escenarios de mercado** (optimista, neutral, pesimista) para que el cliente visualice el posible crecimiento de su inversión y tome decisiones informadas.
+- **3. Desarrollar proyecciones de rendimiento en diferentes escenarios de mercado**  para que el cliente visualice el posible crecimiento de su inversión y tome decisiones informadas.
 
 # Datos
 # Desarrollo
@@ -66,6 +66,14 @@ Para ello debemos proporcionar:
 ## Modelo
 ## Deploy
 # Tecnologías
+El proyecto utiliza las siguientes herramientas y librerías:
+
+Python para el desarrollo general.
+* Streamlit para crear la interfaz interactiva.
+* YFinance para obtener datos históricos de activos.
+* Pandas y Numpy para manipulación y análisis de datos.
+* Matplotlib y Seaborn para visualización de datos.
+* Scikit-learn para predicciones basadas en modelos de machine learning.
 # Conclusiones
 # Equipo
 
