@@ -21,12 +21,12 @@
 ![Google Colaboratory](https://img.shields.io/badge/-Google%20Colaboratory-black?style=flat-square&logo=googlecolaboratory)
 ![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-black?style=flat&logo=visual-studio-code&logoColor=007ACC)
 
-# $\textcolor{#1698E3}{\text{Producto}}$
+# Producto
 
 - [Presentación del Producto]()
 - [Documentación Completa del Desarrollo del Proyecto]()
 
-# $\textcolor{#1698E3}{\text{Índice}}$
+# Índice
 
 - [Introducción](#Introducción)
 - [Objetivos](#Objetivos)
@@ -41,11 +41,11 @@
 - [Conclusiones](#Conclusiones)
 - [Equipo](#Equipo)
 
-# $\textcolor{#1698E3}{\text{Introducción}}$
+# Introducción
 
 Nuestro cliente el Banco de Inversión Latinoamericano (BILA) quiere resolver la falta de herramientas accesibles para que sus clientes puedan identificar su perfil de riesgo y tomar decisiones de inversión informadas y personalizadas. Actualmente, muchas personas tienen dificultades para entender cuánto riesgo están dispuestas a asumir y cómo podrían crecer sus inversiones bajo diferentes escenarios de mercado. Esto resulta en inversiones mal ajustadas al perfil de riesgo, baja satisfacción y resultados financieros inesperados.
 
-# $\textcolor{#1698E3}{\text{Objetivos}}$
+# Objetivos
 
 Desarrollar una solución que permita a los clientes de BILA recibir asesoría personalizada en sus inversiones, en función de su perfil de riesgo, optimizando el portafolio de inversión  y proporcionando proyecciones de rendimiento para aumentar la satisfacción, retención y fidelización de los clientes.
 
