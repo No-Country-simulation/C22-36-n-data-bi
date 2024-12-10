@@ -2,7 +2,7 @@
 
 # <h1 align= 'center'>Proyecto sobre Tendencias de Inversión</h1>
 <p align = center>
-  <img src= 'assets/inversiones.png' width= 100% >
+  <img src= 'assets/HXl0slFpRJeDOJk5F-X8Tg.jpg' width= 100% >
 </p>
 
 ![Markdown](https://img.shields.io/badge/-Markdown-black?style=flat-square&logo=markdown)
@@ -21,12 +21,12 @@
 ![Google Colaboratory](https://img.shields.io/badge/-Google%20Colaboratory-black?style=flat-square&logo=googlecolaboratory)
 ![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-black?style=flat&logo=visual-studio-code&logoColor=007ACC)
 
-# $\textcolor{#1698E3}{\text{Producto}}$
+# Producto
 
 - [Presentación del Producto]()
 - [Documentación Completa del Desarrollo del Proyecto]()
 
-# $\textcolor{#1698E3}{\text{Índice}}$
+# Índice
 
 - [Introducción](#Introducción)
 - [Objetivos](#Objetivos)
@@ -41,11 +41,11 @@
 - [Conclusiones](#Conclusiones)
 - [Equipo](#Equipo)
 
-# $\textcolor{#1698E3}{\text{Introducción}}$
+# Introducción
 
 Nuestro cliente el Banco de Inversión Latinoamericano (BILA) quiere resolver la falta de herramientas accesibles para que sus clientes puedan identificar su perfil de riesgo y tomar decisiones de inversión informadas y personalizadas. Actualmente, muchas personas tienen dificultades para entender cuánto riesgo están dispuestas a asumir y cómo podrían crecer sus inversiones bajo diferentes escenarios de mercado. Esto resulta en inversiones mal ajustadas al perfil de riesgo, baja satisfacción y resultados financieros inesperados.
 
-# $\textcolor{#1698E3}{\text{Objetivos}}$
+# Objetivos
 
 Desarrollar una solución que permita a los clientes de BILA recibir asesoría personalizada en sus inversiones, en función de su perfil de riesgo, optimizando el portafolio de inversión  y proporcionando proyecciones de rendimiento para aumentar la satisfacción, retención y fidelización de los clientes.
 
@@ -56,16 +56,54 @@ Para ello debemos proporcionar:
 
 - **1. Identificar y clasificar el perfil de riesgo de cada cliente** mediante un cuestionario que permita definir su tolerancia al riesgo y horizonte de inversión, categorizándolo en un perfil adecuado (conservador, moderado, agresivo).
 - **2. Proporcionar recomendaciones personalizadas de distribución de activos** (bonos, ETFs, acciones, criptomonedas, etc) según el perfil de riesgo de cada cliente, optimizando la asignación de acuerdo con sus preferencias y objetivos financieros.
-- **3. Desarrollar proyecciones de rendimiento en diferentes escenarios de mercado** (optimista, neutral, pesimista) para que el cliente visualice el posible crecimiento de su inversión y tome decisiones informadas.
+- **3. Desarrollar proyecciones de rendimiento en diferentes escenarios de mercado**  para que el cliente visualice el posible crecimiento de su inversión y tome decisiones informadas.
 
 # Datos
+El proyecto utiliza datos financieros históricos para analizar y optimizar portafolios de inversión. Estos datos son extraídos de fuentes confiables a través de la API de Yahoo Finance utilizando la librería yfinance.
+
+### Fuente de Datos
+* Proveedor: Yahoo Finance
+* Contenido: Precios históricos de cierre para activos financieros como:
+*   Acciones: Microsoft (MSFT), Apple (AAPL), Google (GOOGL), entre otros.
+*   Bonos: Índices como ^IRX, ^FVX.
+*   ETFs: SPY, QQQ, VTI, entre otros.
+*   Futuros: Oro (GC=F), Petróleo (CL=F).
+*   Criptomonedas: Bitcoin (BTC-USD), Ethereum (ETH-USD).
+### Descripción del Dataset
+Rango temporal:
+Los datos abarcan desde el 9 de noviembre de 2017 hasta el 31 de octubre de 2024 (configurable).
+### Variables principales:
+* Close: Precio de cierre diario para cada activo.
+* Fecha: Índice temporal de los precios.
 # Desarrollo
 ## ETL
+### Extracción de Datos
+Utilizando la librería yfinance, se obtienen datos históricos de precios de cierre de una lista de activos financieros para un rango de fechas definido. Esto asegura que los datos sean precisos y estén actualizados.
+
+* Método: download_data(assets: List[str])
+* Entrada: Lista de activos financieros (por ejemplo, ["MSFT", "AAPL"]).
+* Salida: DataFrame consolidado con precios de cierre para cada activo.
+### Transformación de Datos
+Los datos extraídos se transforman para mantener únicamente las columnas relevantes (por ejemplo, los precios de cierre). Se renombran las columnas con los nombres de los activos para facilitar su análisis posterior.
+
+### Procesamiento de Portafolios
+La función process_portfolios(portfolios: Dict[str, List[str]]) organiza los datos en portafolios categorizados por tipo de activo (acciones, bonos, ETFs, etc.).
+
+* Entrada: Un diccionario donde las claves son los nombres de los portafolios (por ejemplo, "Bonos") y los valores son listas de activos correspondientes.
+* Salida: Un diccionario donde cada clave contiene un DataFrame con los datos históricos de los activos de ese portafolio.
 ## EDA
 ## Dashboard
 ## Modelo
 ## Deploy
 # Tecnologías
+El proyecto utiliza las siguientes herramientas y librerías:
+
+* Python para el desarrollo general.
+* Streamlit para crear la interfaz interactiva.
+* YFinance para obtener datos históricos de activos.
+* Pandas y Numpy para manipulación y análisis de datos.
+* Matplotlib y Seaborn para visualización de datos.
+* Scikit-learn para predicciones basadas en modelos de machine learning.
 # Conclusiones
 # Equipo
 
@@ -74,11 +112,6 @@ Para ello debemos proporcionar:
 <!-- Primera fila -->
 <table>
   <tr>
-    <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/106486985?s=400&u=f2b5a4953b674b71e5df9e4c71c89ee2ae75fa65&v=4" width="200" height="200"><br><strong>Marco</strong><br>
-      <a href="https://www.linkedin.com/in/marco-antonio-caro-22459711b"><img src="assets/linkedin.png" style="width:20px;"></a>
-      <a href="https://github.com/marco11235813"><img src="assets/github.png" style="width:20px;"></a>
-    </td>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/12752331?v=4" width="200" height="200"><br><strong>Manuel</strong><br>
       <a href="https://www.linkedin.com/in/manuel-carruitero-b8b50688/"><img src="assets/linkedin.png" style="width:20px;"></a>
@@ -89,22 +122,14 @@ Para ello debemos proporcionar:
       <a href="https://www.linkedin.com/in/joselo-ardiles-ugaz/"><img src="assets/linkedin.png" style="width:20px;"></a>
       <a href="https://github.com/JoseloArdiles"><img src="assets/github.png" style="width:20px;"></a>
     </td>
-  </tr>
-</table>
-
-<!-- Segunda fila -->
-<table>
-  <tr>
-    <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/144939187?v=4" width="200" height="200"><br><strong>Henry</strong><br>
-      <a href="https://www.linkedin.com/in/henry-larreal-carrera/"><img src="assets/linkedin.png" style="width:20px;"></a>
-      <a href="https://github.com/hendevdata"><img src="assets/github.png" style="width:20px;"></a>
-    </td>
+      <tr>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/152358919?s=400&u=360b4d22b4075bad0278c7826c792b4c6684afe2&v=4" width="200" height="200"><br><strong>Mario</strong><br>
       <a href="https://www.linkedin.com/in/mario-hernández-/"><img src="assets/linkedin.png" style="width:20px;"></a>
       <a href="https://github.com/mao-bio"><img src="assets/github.png" style="width:20px;"></a>
     </td>
+  </tr>
+
   </tr>
 </table>
 

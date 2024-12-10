@@ -101,7 +101,8 @@ def run_portfolio_analysis(portfolio_allocation):
             # Predict returns
             investment = investment_total * allocation
             predictor = PortfolioPredictor(portfolio_data[portfolio_name], optimal_weights['weights'])
-            predictor.train_model()
+            #predictor.train_or_load_model(train_new_model=False)
+            predictor.train_or_load_model(train_new_model=False, model_id=4)
             
             # Predictions for different time horizons
             predictions = {
@@ -146,11 +147,10 @@ def display_portfolio_results(results):
     st.header("Análisis Detallado de Portafolio")
     
     # Tabs for different views
-    tab1, tab2, tab3, tab4= st.tabs([
+    tab1, tab2, tab3= st.tabs([
         "Rendimientos y Volatilidad", 
         "Distribución de Pesos", 
-        "Predicciones a Largo Plazo", 
-        "Comparación de Rendimiento"
+        "Predicciones a Largo Plazo"
     ])
     
     
@@ -174,6 +174,32 @@ def display_portfolio_results(results):
         st.dataframe(metrics_df.style.format({
             'Rendimiento Anual (%)': '{:.2f}%',
             'Volatilidad Anual (%)': '{:.2f}%'
+        }))
+        st.subheader("Comparación de Rendimiento y Riesgo")
+        performance_data = []
+        for portfolio_name, portfolio_data in results.items():
+            performance = portfolio_data['performance']
+            performance_data.append({
+                'Portafolio': portfolio_name,
+                'Rendimiento Anual (%)': performance['return'] * 100,
+                'Volatilidad Anual (%)': performance['volatility'] * 100,
+                #'Ratio Sharpe': performance['sharpe_ratio']
+            })
+            #print(f"Ratio de Sharpe: {portfolio_data['performance']['sharpe_ratio']}")
+
+        performance_df = pd.DataFrame(performance_data)
+        
+        # Verificar y convertir columnas
+        performance_df['Rendimiento Anual (%)'] = pd.to_numeric(performance_df['Rendimiento Anual (%)'], errors='coerce')
+        performance_df['Volatilidad Anual (%)'] = pd.to_numeric(performance_df['Volatilidad Anual (%)'], errors='coerce')
+        #performance_df['Ratio Sharpe'] = pd.to_numeric(performance_df['Ratio Sharpe'], errors='coerce')
+        performance_df = performance_df.fillna(0)  # Manejar NaN si los hubiera
+
+        # Mostrar en Streamlit
+        st.dataframe(performance_df.style.format({
+            'Rendimiento Anual (%)': '{:.2f}%',
+            'Volatilidad Anual (%)': '{:.2f}%',
+            #'Ratio Sharpe': '{:.2f}'
         }))
     
     with tab2:
@@ -253,33 +279,7 @@ def display_portfolio_results(results):
             'Suma Total de Valor Final': '${:,.2f}'
         }))
         
-    with tab4:
-        st.subheader("Comparación de Rendimiento y Riesgo")
-        performance_data = []
-        for portfolio_name, portfolio_data in results.items():
-            performance = portfolio_data['performance']
-            performance_data.append({
-                'Portafolio': portfolio_name,
-                'Rendimiento Anual (%)': performance['return'] * 100,
-                'Volatilidad Anual (%)': performance['volatility'] * 100,
-                'Ratio Sharpe': performance['sharpe_ratio']
-            })
 
-        performance_df = pd.DataFrame(performance_data)
-        
-        # Verificar y convertir columnas
-        performance_df['Rendimiento Anual (%)'] = pd.to_numeric(performance_df['Rendimiento Anual (%)'], errors='coerce')
-        performance_df['Volatilidad Anual (%)'] = pd.to_numeric(performance_df['Volatilidad Anual (%)'], errors='coerce')
-        performance_df['Ratio Sharpe'] = pd.to_numeric(performance_df['Ratio Sharpe'], errors='coerce')
-        performance_df = performance_df.fillna(0)  # Manejar NaN si los hubiera
-
-        # Mostrar en Streamlit
-        st.dataframe(performance_df.style.format({
-            'Rendimiento Anual (%)': '{:.2f}%',
-            'Volatilidad Anual (%)': '{:.2f}%',
-            'Ratio Sharpe': '{:.2f}'
-        }))
-        
         
     
 
