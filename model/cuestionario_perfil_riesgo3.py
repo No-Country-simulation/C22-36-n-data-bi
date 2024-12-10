@@ -48,7 +48,7 @@ def calcular_perfil(total_score):
 
 def cambiar_seccion(nueva_seccion):
     st.session_state.section = nueva_seccion
-
+force_download = st.sidebar.checkbox("Descargar datos nuevamente", value=False)
 def reiniciar_cuestionario():
     st.session_state.started = False
     st.session_state.section = 1
@@ -72,8 +72,8 @@ def run_portfolio_analysis(portfolio_allocation):
     }
 
     # 2. Load data
-    loader = DataLoader(start_date="2017-11-09")
-    portfolio_data = loader.process_portfolios(portfolios)
+    loader = DataLoader(start_date="2017-11-09", end_date="2024-10-31")
+    portfolio_data = loader.process_portfolios(portfolios, force_download=force_download)
 
     # 3. Analyze and optimize each selected portfolio
     investment_total = 100000  # Initial capital
