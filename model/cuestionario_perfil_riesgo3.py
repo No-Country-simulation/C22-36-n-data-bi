@@ -142,17 +142,16 @@ def run_portfolio_analysis(portfolio_allocation):
 
 def display_portfolio_results(results):
     """
-    Display portfolio analysis results in Streamlit
+    Display portfolio analysis results in Streamlit with bar charts
     """
     st.header("Análisis Detallado de Portafolio")
     
     # Tabs for different views
-    tab1, tab2, tab3= st.tabs([
+    tab1, tab2, tab3 = st.tabs([
         "Rendimientos y Volatilidad", 
         "Distribución de Pesos", 
         "Predicciones a Largo Plazo"
     ])
-    
     
     with tab1:
         st.subheader("Rendimientos y Volatilidad por Activo")
@@ -171,10 +170,44 @@ def display_portfolio_results(results):
                 })
         
         metrics_df = pd.DataFrame(metrics_data)
-        st.dataframe(metrics_df.style.format({
-            'Rendimiento Anual (%)': '{:.2f}%',
-            'Volatilidad Anual (%)': '{:.2f}%'
-        }))
+        
+        # Layout con columnas más ajustadas
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.dataframe(metrics_df.style.format({
+                'Rendimiento Anual (%)': '{:.2f}%',
+                'Volatilidad Anual (%)': '{:.2f}%'
+            }), use_container_width=True)
+        
+        with col2:
+            # Gráficos de barras para Rendimiento con paleta de colores
+            plt.figure(figsize=(10, 6))
+            plt.subplot(2, 1, 1)
+            metrics_df.plot(x='Activo', y='Rendimiento Anual (%)', 
+                            kind='bar', 
+                            ax=plt.gca(), 
+                            color='lightblue', 
+                            edgecolor='darkblue')
+            plt.title('Rendimiento Anual por Activo', fontsize=10)
+            plt.xticks(rotation=45, ha='right', fontsize=8)
+            plt.ylabel('Rendimiento (%)', fontsize=8)
+            plt.tight_layout()
+            
+            # Gráficos de barras para Volatilidad
+            plt.subplot(2, 1, 2)
+            metrics_df.plot(x='Activo', y='Volatilidad Anual (%)', 
+                            kind='bar', 
+                            ax=plt.gca(), 
+                            color='lightcoral', 
+                            edgecolor='darkred')
+            plt.title('Volatilidad Anual por Activo', fontsize=10)
+            plt.xticks(rotation=45, ha='right', fontsize=8)
+            plt.ylabel('Volatilidad (%)', fontsize=8)
+            plt.tight_layout()
+            
+            st.pyplot(plt)
+        
         st.subheader("Comparación de Rendimiento y Riesgo")
         performance_data = []
         for portfolio_name, portfolio_data in results.items():
@@ -183,24 +216,51 @@ def display_portfolio_results(results):
                 'Portafolio': portfolio_name,
                 'Rendimiento Anual (%)': performance['return'] * 100,
                 'Volatilidad Anual (%)': performance['volatility'] * 100,
-                #'Ratio Sharpe': performance['sharpe_ratio']
             })
-            #print(f"Ratio de Sharpe: {portfolio_data['performance']['sharpe_ratio']}")
 
         performance_df = pd.DataFrame(performance_data)
         
-        # Verificar y convertir columnas
+        # Convertir columnas
         performance_df['Rendimiento Anual (%)'] = pd.to_numeric(performance_df['Rendimiento Anual (%)'], errors='coerce')
         performance_df['Volatilidad Anual (%)'] = pd.to_numeric(performance_df['Volatilidad Anual (%)'], errors='coerce')
-        #performance_df['Ratio Sharpe'] = pd.to_numeric(performance_df['Ratio Sharpe'], errors='coerce')
-        performance_df = performance_df.fillna(0)  # Manejar NaN si los hubiera
+        performance_df = performance_df.fillna(0)
 
-        # Mostrar en Streamlit
-        st.dataframe(performance_df.style.format({
-            'Rendimiento Anual (%)': '{:.2f}%',
-            'Volatilidad Anual (%)': '{:.2f}%',
-            #'Ratio Sharpe': '{:.2f}'
-        }))
+        # Layout con columnas más ajustadas
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.dataframe(performance_df.style.format({
+                'Rendimiento Anual (%)': '{:.2f}%',
+                'Volatilidad Anual (%)': '{:.2f}%'
+            }), use_container_width=True)
+        
+        with col2:
+            # Gráficos de barras para Rendimiento de Portafolios
+            plt.figure(figsize=(8, 6))
+            plt.subplot(2, 1, 1)
+            performance_df.plot(x='Portafolio', y='Rendimiento Anual (%)', 
+                                kind='bar', 
+                                ax=plt.gca(), 
+                                color='lightgreen', 
+                                edgecolor='darkgreen')
+            plt.title('Rendimiento Anual por Portafolio', fontsize=10)
+            plt.xticks(rotation=45, ha='right', fontsize=8)
+            plt.ylabel('Rendimiento (%)', fontsize=8)
+            plt.tight_layout()
+            
+            # Gráficos de barras para Volatilidad de Portafolios
+            plt.subplot(2, 1, 2)
+            performance_df.plot(x='Portafolio', y='Volatilidad Anual (%)', 
+                                kind='bar', 
+                                ax=plt.gca(), 
+                                color='lightsalmon', 
+                                edgecolor='darkred')
+            plt.title('Volatilidad Anual por Portafolio', fontsize=10)
+            plt.xticks(rotation=45, ha='right', fontsize=8)
+            plt.ylabel('Volatilidad (%)', fontsize=8)
+            plt.tight_layout()
+            
+            st.pyplot(plt)
     
     with tab2:
         st.subheader("Distribución de Pesos en Portafolios")
