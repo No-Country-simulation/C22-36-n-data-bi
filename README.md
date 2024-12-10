@@ -2,7 +2,7 @@
 
 # <h1 align= 'center'>Proyecto sobre Tendencias de Inversión</h1>
 <p align = center>
-  <img src= 'assets/HXl0slFpRJeDOJk5F-X8Tg.jpg' width= 100% >
+  <img src= 'assets/logo.jpg' width= 100% >
 </p>
 
 ![Markdown](https://img.shields.io/badge/-Markdown-black?style=flat-square&logo=markdown)
