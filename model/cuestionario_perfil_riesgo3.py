@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+import time
 st.set_page_config(
     page_title="PortfolioOp",
     page_icon="🏦",
@@ -62,82 +62,109 @@ def run_portfolio_analysis(portfolio_allocation):
     """
     Run portfolio optimization and prediction based on allocation
     """
-    # 1. Define portfolios
-    portfolios = {
-        "Bonos": ["^IRX", "^FVX", "^TNX", "^TYX"],
-        "ETFs": ["SPY", "QQQ", "VTI", "IVV", "XLV"],
-        "Acciones": ["MSFT", "GOOGL", "O", "PG", "ISRG", "MDT", "JPM"],
-        "Futuros": ["GC=F", "CL=F", "SI=F", "NQ=F", "ES=F"],
-        "Criptomonedas": ["BTC-USD", "ETH-USD", "BNB-USD", "TRX-USD", "DOGE-USD"]
-    }
+    # Use a progress bar instead of multiple spinners
+    progress_bar = st.progress(0)
+    status_text = st.empty()
 
-    # 2. Load data
-    loader = DataLoader(start_date="2017-11-09", end_date="2024-10-31")
-    portfolio_data = loader.process_portfolios(portfolios, force_download=force_download)
+    try:
+        # 1. Define portfolios
+        status_text.text('Iniciando análisis de portafolio...')
+        progress_bar.progress(10)
+        
+        portfolios = {
+            "Bonos": ["^IRX", "^FVX", "^TNX", "^TYX"],
+            "ETFs": ["SPY", "QQQ", "VTI", "IVV", "XLV"],
+            "Acciones": ["MSFT", "GOOGL", "O", "PG", "ISRG", "MDT", "JPM"],
+            "Futuros": ["GC=F", "CL=F", "SI=F", "NQ=F", "ES=F"],
+            "Criptomonedas": ["BTC-USD", "ETH-USD", "BNB-USD", "TRX-USD", "DOGE-USD"]
+        }
 
-    # 3. Analyze and optimize each selected portfolio
-    investment_total = 100000  # Initial capital
-    results = {}
+        # 2. Load data
+        status_text.text('Descargando datos históricos de mercado...')
+        progress_bar.progress(30)
+        loader = DataLoader(start_date="2017-11-09", end_date="2024-10-31")
+        portfolio_data = loader.process_portfolios(portfolios, force_download=force_download)
 
-    for portfolio_name, allocation in portfolio_allocation.items():
-        if allocation > 0 and portfolio_name in portfolio_data:
+        # 3. Analyze and optimize each selected portfolio
+        status_text.text('Preparando análisis de portafolio...')
+        progress_bar.progress(50)
+        investment_total = 100000  # Initial capital
+        results = {}
+
+        for i, (portfolio_name, allocation) in enumerate(portfolio_allocation.items(), 1):
+            status_text.text(f'Analizando portafolio: {portfolio_name}...')
+            progress_bar.progress(50 + (i * 10))
+            
+            if allocation > 0 and portfolio_name in portfolio_data:
             # Skip if portfolio is empty
-            if portfolio_data[portfolio_name].empty:
-                st.warning(f"No data available for {portfolio_name} portfolio")
-                continue
+                if portfolio_data[portfolio_name].empty:
+                    st.warning(f"No data available for {portfolio_name} portfolio")
+                    continue
 
-            # Perform analysis
-            analyzer = PortfolioAnalyzer(portfolio_data[portfolio_name])
-            
-            # Calculate metrics
-            returns, volatility = analyzer.calculate_metrics()
-            
-            # Optimize weights
-            optimal_weights = analyzer.optimize_weights()
-            
-            # Calculate portfolio performance
-            performance = analyzer.portfolio_performance(optimal_weights['weights'])
-            
-            # Predict returns
-            investment = investment_total * allocation
-            predictor = PortfolioPredictor(portfolio_data[portfolio_name], optimal_weights['weights'])
-            #predictor.train_or_load_model(train_new_model=False)
-            predictor.train_or_load_model(train_new_model=False, model_id=4)
-            
-            # Predictions for different time horizons
-            predictions = {
-                3: predictor.predict_returns(investment, 3),
-                5: predictor.predict_returns(investment, 5),
-                10: predictor.predict_returns(investment, 10)
-            }
-            
-            
-            # Store results
-            results[portfolio_name] = {
-                'returns': returns,
-                'volatility': volatility,
-                'optimal_weights': optimal_weights,
-                'performance': performance,
-                'predictions': predictions
-            }
-            predictions_summary = {}
-            for years, pred in predictions.items():
-                final_value = pred['Portfolio_Value'].iloc[-1]
-                total_return = (final_value - investment) / investment * 100
-                predictions_summary[years] = {
-                    'predictions': pred,
-                    'initial_value': investment,  # Valor inicial del portafolio
-                    'final_value': final_value,
-                    'total_return': total_return
+                # Perform analysis
+                analyzer = PortfolioAnalyzer(portfolio_data[portfolio_name])
+                
+                # Calculate metrics
+                returns, volatility = analyzer.calculate_metrics()
+                
+                # Optimize weights
+                optimal_weights = analyzer.optimize_weights()
+                
+                # Calculate portfolio performance
+                performance = analyzer.portfolio_performance(optimal_weights['weights'])
+                
+                # Predict returns
+                investment = investment_total * allocation
+                predictor = PortfolioPredictor(portfolio_data[portfolio_name], optimal_weights['weights'])
+                #predictor.train_or_load_model(train_new_model=False)
+                predictor.train_or_load_model(train_new_model=False, model_id=4)
+                
+                # Predictions for different time horizons
+                predictions = {
+                    3: predictor.predict_returns(investment, 3),
+                    5: predictor.predict_returns(investment, 5),
+                    10: predictor.predict_returns(investment, 10)
                 }
+                
+                
+                # Store results
+                results[portfolio_name] = {
+                    'returns': returns,
+                    'volatility': volatility,
+                    'optimal_weights': optimal_weights,
+                    'performance': performance,
+                    'predictions': predictions
+                }
+                predictions_summary = {}
+                for years, pred in predictions.items():
+                    final_value = pred['Portfolio_Value'].iloc[-1]
+                    total_return = (final_value - investment) / investment * 100
+                    predictions_summary[years] = {
+                        'predictions': pred,
+                        'initial_value': investment,  # Valor inicial del portafolio
+                        'final_value': final_value,
+                        'total_return': total_return
+                    }
 
-            # Update the results dictionary
-            results[portfolio_name]['predictions'] = predictions_summary
-            
-            
+                # Update the results dictionary
+                results[portfolio_name]['predictions'] = predictions_summary
+                
+                
 
 
-    return results
+        status_text.text('Finalizando análisis de portafolio...')
+        progress_bar.progress(100)
+        
+        return results
+
+    except Exception as e:
+        status_text.text(f'Error: {str(e)}')
+        progress_bar.progress(0)
+        raise
+    finally:
+        # Optional: clear the status text after completion
+        time.sleep(2)
+        status_text.empty()
 
 
 def display_portfolio_results(results):
