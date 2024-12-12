@@ -1,9 +1,10 @@
-# Importar módulos necesarios
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
 from typing import Dict, Tuple
 from risk_free import get_average_risk_free_rate
+import matplotlib.pyplot as plt
+
 
 class PortfolioAnalyzer:
     def __init__(self, data: pd.DataFrame, risk_free_rate: float = None):
@@ -18,7 +19,7 @@ class PortfolioAnalyzer:
         annual_volatility = self.returns.std() * np.sqrt(252)
         return annual_returns, annual_volatility
     
-    def optimize_weights(self, max_weight: float = 0.6, min_weight: float = 0.05) -> Dict:
+    def optimize_weights(self, max_weight: float = 0.35, min_weight: float = 0.05) -> Dict:
         """Optimiza los pesos del portafolio usando Sharpe Ratio con restricción de peso máximo."""
         n_assets = len(self.data.columns)
         
@@ -56,6 +57,61 @@ class PortfolioAnalyzer:
             'volatility': portfolio_vol,
             'sharpe_ratio': (portfolio_return - self.risk_free_rate) / portfolio_vol
         }
+
+    def distribution_graphics(self, weights: np.array, title: str = "Portfolio Distribution", 
+                              others: float = 0.05, cmap: str = "tab20", height: int = 6, 
+                              width: int = 10, nrow: int = 25, ax=None):
+        """
+        Grafica la distribución de pesos del portafolio en un gráfico de torta.
+        
+        Args:
+            weights (np.array): Pesos optimizados del portafolio.
+            title (str): Título del gráfico.
+            others (float): Límite para agregar categorías pequeñas en "Otros".
+            cmap (str): Paleta de colores.
+            height (int): Altura del gráfico.
+            width (int): Ancho del gráfico.
+            nrow (int): Número de colores en el cmap.
+            ax (matplotlib.axes.Axes): Objeto Axes para el gráfico.
+        """
+        # Validar entrada
+        if not isinstance(weights, np.ndarray):
+            raise ValueError("Los pesos deben ser un arreglo numpy (np.array).")
+        
+        asset_names = self.data.columns
+        weights = pd.Series(weights, index=asset_names).sort_values(ascending=False)
+        
+        # Combinar categorías pequeñas en "Otros"
+        if others > 0:
+            small_weights = weights[weights < others].sum()
+            weights = weights[weights >= others]
+            if small_weights > 0:
+                weights["Otros"] = small_weights
+        
+        # Crear el gráfico
+        if ax is None:
+            fig, ax = plt.subplots(figsize=(width, height))
+        cmap = plt.get_cmap(cmap, nrow)
+        
+        wedges, texts, autotexts = ax.pie(
+            weights,
+            labels=weights.index,
+            autopct='%1.1f%%',
+            startangle=90,
+            colors=[plt.cm.tab20(i % 20) for i in range(len(weights))],
+            pctdistance=0.85
+        )
+        
+        # Estilo
+        plt.setp(autotexts, size=8, weight="bold")
+        ax.set_title(title, fontsize=14)
+        ax.axis("equal")  # Asegurar que el gráfico sea circular
+        
+        plt.show()
+
+
+
+
 
 class CompoundPortfolioAnalyzer:
     def __init__(self, portfolio_data: Dict[str, pd.DataFrame], portfolio_weights: Dict[str, float] = None, risk_free_rate: float = None):
@@ -100,3 +156,9 @@ class CompoundPortfolioAnalyzer:
             'volatility': annual_vol,
             'sharpe_ratio': (annual_return - self.risk_free_rate) / annual_vol
         }
+
+
+
+
+
+
