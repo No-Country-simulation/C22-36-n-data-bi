@@ -115,16 +115,17 @@ La función process_portfolios(portfolios: Dict[str, List[str]]) organiza los da
 ### Modelo: Random Forest Regressor
 El modelo Random Forest Regressor es una técnica de ensamble basada en árboles de decisión que combina múltiples modelos débiles para mejorar la precisión y reducir el sobreajuste. Este modelo es particularmente adecuado para predicciones financieras, dado su capacidad para manejar relaciones no lineales y datos heterogéneos.
 
-Implementación:
+### Implementación:
 Se inicializa el modelo con los siguientes parámetros:
-from sklearn.ensemble import RandomForestRegressor
-self.model = RandomForestRegressor(
-    n_estimators=100,  # Número de árboles en el bosque
-    random_state=42    # Semilla para reproducibilidad
-)
-Características del modelo:
-Número de estimadores (n_estimators): 100 árboles para garantizar un balance entre precisión y tiempo de entrenamiento.
-Estado aleatorio (random_state): Fijado para garantizar resultados reproducibles.
+  from sklearn.ensemble import RandomForestRegressor
+  self.model = RandomForestRegressor(
+      n_estimators=100,  # Número de árboles en el bosque
+      random_state=42    # Semilla para reproducibilidad
+  )
+
+### Características del modelo:
+* Número de estimadores (n_estimators): 100 árboles para garantizar un balance entre precisión y tiempo de entrenamiento.
+* Estado aleatorio (random_state): Fijado para garantizar resultados reproducibles.
 ## Deploy
 
 # Tecnologías
