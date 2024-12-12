@@ -139,7 +139,7 @@ El proyecto utiliza las siguientes herramientas y librerías:
 * Scikit-learn para predicciones basadas en modelos de machine learning.
 # Resultados
 
-  <img src='assets/vista1app.png' width="600" height="400">
+  <img src='assets/vista1app.png' width="80%" >
    <img src='assets/vista2app.png' width="600" height="400">
      <img src='assets/vista3app.png' width="600" height="400">
        <img src='assets/vista4app.png' width="600" height="400">
