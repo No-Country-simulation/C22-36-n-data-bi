@@ -15,7 +15,9 @@ class PortfolioPredictor:
         os.makedirs(self.models_dir, exist_ok=True)  # Crear la carpeta si no existe
 
     def prepare_data(self, window_size: int = 30) -> Tuple[np.array, np.array]:
+
         """Prepara los datos para el modelo."""
+
         if self.weights is not None:
             portfolio_returns = (self.data.pct_change() * self.weights).sum(axis=1)
         else:
