@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import time
 st.set_page_config(
     page_title="PortfolioOp",
-    page_icon="🏦",
+    page_icon="🧭",
     layout="wide" #"centered"
 )
 
