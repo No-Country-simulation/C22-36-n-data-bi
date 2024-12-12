@@ -95,14 +95,14 @@ La función process_portfolios(portfolios: Dict[str, List[str]]) organiza los da
 ## Dashboard
 <table>
   <tr>
-    <td align="center">
+    <td >
       <img src='assets/dash1.png' width="600" height="400">
     </td>
-    <td align="center">
+    <td >
       <img src='assets/dash2.png' width="600" height="400">
     </td>
       <tr>
-    <td align="center">
+    <td >
       <img src='assets/dash3.png' width="600" height="400">
     </td>
   </tr>
