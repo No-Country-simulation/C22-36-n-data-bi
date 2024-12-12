@@ -140,10 +140,10 @@ El proyecto utiliza las siguientes herramientas y librerías:
 # Resultados
 
   <img src='assets/vista1app.png' width="80%" >
-   <img src='assets/vista2app.png' width="600" height="400">
-     <img src='assets/vista3app.png' width="600" height="400">
-       <img src='assets/vista4app.png' width="600" height="400">
-         <img src='assets/vista5app.png' width="600" height="400"> 
+   <img src='assets/vista2app.png' width="80%" >
+     <img src='assets/vista3app.png' width="80%" >
+       <img src='assets/vista4app.png' width="80%" >
+         <img src='assets/vista5app.png' width="80%" > 
 
 # Equipo
 
