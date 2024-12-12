@@ -32,6 +32,24 @@ def mostrar_grafico_portafolio(analyzer, optimal_weights, nombre):
         title=f"Distribución del Portafolio {nombre}"
     )
 
+def guardar_resultados_csv(portfolio_results, filename="portfolio_results.csv"):
+    """
+    Función para guardar los resultados del análisis de portafolio en un archivo CSV.
+    """
+    data_for_csv = []
+    for name, results in portfolio_results.items():
+        for asset in results['returns'].index:
+            data_for_csv.append({
+                'Portafolio': name,
+                'Activo': asset,
+                'Retorno Anualizado (%)': results['returns'][asset] * 100,
+                'Volatilidad Anualizada (%)': results['volatility'][asset] * 100
+            })
+    
+    df = pd.DataFrame(data_for_csv)
+    df.to_csv(filename, index=False)
+    print(f"\nResultados guardados en {filename}")
+
 def ejecutar_analisis():
     # 1. Definir los portafolios
     portfolios = {
@@ -44,7 +62,7 @@ def ejecutar_analisis():
 
     # 2. Cargar datos
     print("Cargando datos...")
-    loader = DataLoader(start_date="2020-01-01")  # Últimos 4 años de datos
+    loader = DataLoader(start_date="2017-11-09")  # Últimos 4 años de datos
     portfolio_data = loader.process_portfolios(portfolios)
 
     # 3. Analizar cada portafolio
@@ -67,6 +85,9 @@ def ejecutar_analisis():
             
             # Mostrar gráfico de distribución
             mostrar_grafico_portafolio(analyzer, optimal_weights, name)
+
+    # 4. Guardar resultados en un archivo CSV
+    guardar_resultados_csv(portfolio_results)
             
     # 4. Realizar predicciones para todos los portafolios
     # Porcentajes de inversión para cada portafolio

@@ -116,7 +116,7 @@ def run_portfolio_analysis(portfolio_allocation):
                 # Predict returns
                 investment = investment_total * allocation
                 predictor = PortfolioPredictor(portfolio_data[portfolio_name], optimal_weights['weights'])
-                #predictor.train_or_load_model(train_new_model=False)
+                #predictor.train_or_load_model(train_new_model=True)
                 predictor.train_or_load_model(train_new_model=False, model_id=4)
                 
                 # Predictions for different time horizons
@@ -180,6 +180,15 @@ def display_portfolio_results(results):
         "Predicciones a Largo Plazo"
     ])
     
+    # Diccionario con las descripciones de cada activo
+    asset_descriptions = {
+        "Bonos": "Instrumentos de deuda emitidos por gobiernos o corporaciones para financiar sus operaciones. Son considerados inversiones de bajo riesgo.",
+        "ETFs": "Fondos que cotizan en bolsa, que agrupan una variedad de activos y permiten diversificación con costos bajos.",
+        "Acciones": "Representan una participación en una empresa, lo que da derecho a beneficios económicos como dividendos.",
+        "Futuros": "Contratos financieros que obligan a las partes a comprar o vender un activo a un precio establecido en una fecha futura.",
+        "Criptomonedas": "Activos digitales basados en tecnología blockchain que se utilizan como medio de intercambio o inversión."
+    }
+
     with tab1:
         st.subheader("Rendimientos y Volatilidad por Activo")
         metrics_data = []
@@ -198,7 +207,6 @@ def display_portfolio_results(results):
         
         metrics_df = pd.DataFrame(metrics_data)
         
-        # Layout con columnas más ajustadas
         col1, col2 = st.columns([1, 1])
         
         with col1:
@@ -208,7 +216,6 @@ def display_portfolio_results(results):
             }), use_container_width=True)
         
         with col2:
-            # Gráficos de barras para Rendimiento con paleta de colores
             plt.figure(figsize=(10, 6))
             plt.subplot(2, 1, 1)
             metrics_df.plot(x='Activo', y='Rendimiento Anual (%)', 
@@ -221,7 +228,6 @@ def display_portfolio_results(results):
             plt.ylabel('Rendimiento (%)', fontsize=8)
             plt.tight_layout()
             
-            # Gráficos de barras para Volatilidad
             plt.subplot(2, 1, 2)
             metrics_df.plot(x='Activo', y='Volatilidad Anual (%)', 
                             kind='bar', 
@@ -235,59 +241,11 @@ def display_portfolio_results(results):
             
             st.pyplot(plt)
         
-        st.subheader("Comparación de Rendimiento y Riesgo")
-        performance_data = []
-        for portfolio_name, portfolio_data in results.items():
-            performance = portfolio_data['performance']
-            performance_data.append({
-                'Portafolio': portfolio_name,
-                'Rendimiento Anual (%)': performance['return'] * 100,
-                'Volatilidad Anual (%)': performance['volatility'] * 100,
-            })
+        st.subheader("Descripción de Portafolio")
+        for asset in metrics_df['Portafolio'].unique():
+            description = asset_descriptions.get(asset, "Descripción no disponible para este activo.")
+            st.markdown(f"**{asset}:** {description}")
 
-        performance_df = pd.DataFrame(performance_data)
-        
-        # Convertir columnas
-        performance_df['Rendimiento Anual (%)'] = pd.to_numeric(performance_df['Rendimiento Anual (%)'], errors='coerce')
-        performance_df['Volatilidad Anual (%)'] = pd.to_numeric(performance_df['Volatilidad Anual (%)'], errors='coerce')
-        performance_df = performance_df.fillna(0)
-
-        # Layout con columnas más ajustadas
-        col1, col2 = st.columns([1, 1])
-        
-        with col1:
-            st.dataframe(performance_df.style.format({
-                'Rendimiento Anual (%)': '{:.2f}%',
-                'Volatilidad Anual (%)': '{:.2f}%'
-            }), use_container_width=True)
-        
-        with col2:
-            # Gráficos de barras para Rendimiento de Portafolios
-            plt.figure(figsize=(8, 6))
-            plt.subplot(2, 1, 1)
-            performance_df.plot(x='Portafolio', y='Rendimiento Anual (%)', 
-                                kind='bar', 
-                                ax=plt.gca(), 
-                                color='lightgreen', 
-                                edgecolor='darkgreen')
-            plt.title('Rendimiento Anual por Portafolio', fontsize=10)
-            plt.xticks(rotation=45, ha='right', fontsize=8)
-            plt.ylabel('Rendimiento (%)', fontsize=8)
-            plt.tight_layout()
-            
-            # Gráficos de barras para Volatilidad de Portafolios
-            plt.subplot(2, 1, 2)
-            performance_df.plot(x='Portafolio', y='Volatilidad Anual (%)', 
-                                kind='bar', 
-                                ax=plt.gca(), 
-                                color='lightsalmon', 
-                                edgecolor='darkred')
-            plt.title('Volatilidad Anual por Portafolio', fontsize=10)
-            plt.xticks(rotation=45, ha='right', fontsize=8)
-            plt.ylabel('Volatilidad (%)', fontsize=8)
-            plt.tight_layout()
-            
-            st.pyplot(plt)
     
     with tab2:
         st.subheader("Distribución de Pesos en Portafolios")

@@ -1,8 +1,8 @@
 # C22-36-n-data-bi
 
-# <h1 align= 'center'>Proyecto sobre Tendencias de Inversión</h1>
+# <h1 align= 'center'>Proyecto sobre Tendencias de Inversión- Smartreade</h1>
 <p align = center>
-  <img src= 'assets/logo.jpg' width= 100% >
+  <img src= 'assets/logo2.png' width= 100% >
 </p>
 
 ![Markdown](https://img.shields.io/badge/-Markdown-black?style=flat-square&logo=markdown)
@@ -93,8 +93,38 @@ La función process_portfolios(portfolios: Dict[str, List[str]]) organiza los da
 * Salida: Un diccionario donde cada clave contiene un DataFrame con los datos históricos de los activos de ese portafolio.
 ## EDA
 ## Dashboard
+<table>
+  <tr>
+    <td align="center">
+      <img src='assets/dash1.png' width="200" height="200">
+    </td>
+    <td align="center">
+      <img src='assets/dash2.png' width="200" height="200">
+    </td>
+      <tr>
+    <td align="center">
+      <img src='assets/dash3.png' width="200" height="200">
+    </td>
+  </tr>
+
+  </tr>
+</table>
 ## Modelo
+### Modelo: Random Forest Regressor
+El modelo Random Forest Regressor es una técnica de ensamble basada en árboles de decisión que combina múltiples modelos débiles para mejorar la precisión y reducir el sobreajuste. Este modelo es particularmente adecuado para predicciones financieras, dado su capacidad para manejar relaciones no lineales y datos heterogéneos.
+
+Implementación:
+Se inicializa el modelo con los siguientes parámetros:
+from sklearn.ensemble import RandomForestRegressor
+self.model = RandomForestRegressor(
+    n_estimators=100,  # Número de árboles en el bosque
+    random_state=42    # Semilla para reproducibilidad
+)
+Características del modelo:
+Número de estimadores (n_estimators): 100 árboles para garantizar un balance entre precisión y tiempo de entrenamiento.
+Estado aleatorio (random_state): Fijado para garantizar resultados reproducibles.
 ## Deploy
+
 # Tecnologías
 El proyecto utiliza las siguientes herramientas y librerías:
 
