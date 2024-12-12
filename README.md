@@ -96,19 +96,21 @@ La función process_portfolios(portfolios: Dict[str, List[str]]) organiza los da
 <table>
   <tr>
     <td align="center">
-      <img src='assets/dash1.png' width="200" height="200">
+      <img src='assets/dash1.png' width="600" height="400">
     </td>
     <td align="center">
-      <img src='assets/dash2.png' width="200" height="200">
+      <img src='assets/dash2.png' width="600" height="400">
     </td>
       <tr>
     <td align="center">
-      <img src='assets/dash3.png' width="200" height="200">
+      <img src='assets/dash3.png' width="600" height="400">
     </td>
   </tr>
 
   </tr>
 </table>
+
+
 ## Modelo
 ### Modelo: Random Forest Regressor
 El modelo Random Forest Regressor es una técnica de ensamble basada en árboles de decisión que combina múltiples modelos débiles para mejorar la precisión y reducir el sobreajuste. Este modelo es particularmente adecuado para predicciones financieras, dado su capacidad para manejar relaciones no lineales y datos heterogéneos.
