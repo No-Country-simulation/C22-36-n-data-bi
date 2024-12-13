@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide" #"centered"
 )
 
-image_path = "./assets/logo.jpg"
+image_path = "./assets/logo3.png"
 # Import the necessary classes
 from data_loader import DataLoader
 from portfolio_analysis import PortfolioAnalyzer
