@@ -1,6 +1,6 @@
 # C22-36-n-data-bi
 
-# <h1 align= 'center'>Proyecto sobre Tendencias de Inversión- Smartreade</h1>
+# <h1 align= 'center'>Proyecto sobre Tendencias de Inversión- InvestmentCompass</h1>
 <p align = center>
   <img src= 'assets/logo2.png' width= 100% >
 </p>
