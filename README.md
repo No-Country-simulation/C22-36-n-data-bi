@@ -93,22 +93,13 @@ La función process_portfolios(portfolios: Dict[str, List[str]]) organiza los da
 * Salida: Un diccionario donde cada clave contiene un DataFrame con los datos históricos de los activos de ese portafolio.
 ## EDA
 ## Dashboard
-<table>
-  <tr>
-    <td >
-      <img src='assets/dash1.png' width="600" height="400">
-    </td>
-    <td >
-      <img src='assets/dash2.png' width="600" height="400">
-    </td>
-      <tr>
-    <td >
-      <img src='assets/dash3.png' width="600" height="400">
-    </td>
-  </tr>
 
-  </tr>
-</table>
+   <img src='assets/dash1.png' width= 80%>
+
+  <img src='assets/dash2.png'  width= 80%>
+
+   <img src='assets/dash3.png'  width= 80%>
+
 
 
 ## Modelo
